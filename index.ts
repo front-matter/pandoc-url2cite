@@ -82,9 +82,12 @@ async function getCslForUrl(url: string) {
 	);
 
 	if (!res.ok) {
-		throw Error(
-			`could not fetch citation from ${url}: ${await res.text()}`,
-		);
+		// page could not be fetched properly
+		return {
+			fetched: new Date().toJSON(),
+			bibtex: [""],
+			csl: {},
+		};
 	}
 	const bibtex = await res.text();
 	const [csl] = await bibtex2csl(bibtex);
@@ -216,7 +219,10 @@ export class Url2Cite {
 					],
 					[],
 				);
-				const defFormat = outputF === "html" ? "sup" : "normal";
+				// TODO define defFormat based on citation style
+				// for now use "normal" for default APA style
+				// const defFormat = outputF === "html" ? "sup" : "normal";
+				const defFormat = "normal";
 				const outputFormat = meta["url2cite-link-output"] || defFormat;
 				if (outputFormat === "cite-only") return cite;
 				const attr: Attr = [
