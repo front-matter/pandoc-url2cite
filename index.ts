@@ -263,11 +263,11 @@ export class Url2Cite {
 		// untyped https://github.com/mvhenderson/pandoc-filter-node/issues/9
 		data = await filter(data, this.extractCiteKeys, format);
 		data = await filter(data, this.astTransformer, format);
-		console.warn(
-			`got all ${
-				Object.keys(this.cache.urls).length
-			} citations from URLs`,
-		);
+		// console.warn(
+		// 	`got all ${
+		// 		Object.keys(this.cache.urls).length
+		// 	} citations from URLs`,
+		// );
 		// add all cached references to the frontmatter. pandoc-citeproc will handle
 		// (ignore) unused keys. Concatenate with existing references if any exist.
 		const existingRefs =
