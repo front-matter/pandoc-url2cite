@@ -173,10 +173,10 @@ export class Url2Cite {
 				const url = isURL(id) ? id : this.citekeys[id];
 				if (!url) {
 					if (meta["url2cite-allow-dangling-citations"]) continue;
-					else console.error(`Could not find URL for @${id}.`);
+					else console.warn(`Could not find URL for @${id}.`);
 				}
 				if (typeof url !== "string")
-					console.error(`url for ${id} is not string: ${url}`);
+					console.warn(`url for ${id} is not string: ${url}`);
 				await this.getCslForUrlCached(url);
 				// replace the citation id with the url
 				citation.citationId = url;
@@ -245,7 +245,7 @@ export class Url2Cite {
 						[url, targetTitle],
 					);
 				}
-				console.error(`Unknown output format ${outputFormat}`);
+				console.warn(`Unknown output format ${outputFormat}`);
 			}
 		}
 	};

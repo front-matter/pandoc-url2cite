@@ -12,8 +12,8 @@ async function read(stream: NodeJS.ReadStream) {
 async function go() {
 	if (["--help", "--version", "-h", "-v"].includes(process.argv[2] || "-h")) {
 		const { version, homepage } = require("../package.json");
-		console.error(`pandoc-url2cite v${version}`);
-		console.error(
+		console.warn(`pandoc-url2cite v${version}`);
+		console.warn(
 			`Don't run this directly, use it as a pandoc --filter=. Usage: ${homepage}`,
 		);
 		return;
@@ -31,6 +31,6 @@ async function go() {
 }
 
 go().catch((e) => {
-	console.error("extraction error", e);
+	console.warn("extraction error", e);
 	process.exit(1);
 });
