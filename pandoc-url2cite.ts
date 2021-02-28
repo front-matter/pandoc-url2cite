@@ -13,7 +13,7 @@ async function go() {
 	if (["--help", "--version", "-h", "-v"].includes(process.argv[2] || "-h")) {
 		const { version, homepage } = require("../package.json");
 		console.log(`pandoc-url2cite v${version}`);
-		console.log(
+		console.warn(
 			`Don't run this directly, use it as a pandoc --filter=. Usage: ${homepage}`,
 		);
 		return;
@@ -31,6 +31,6 @@ async function go() {
 }
 
 go().catch((e) => {
-	console.log("extraction error", e);
+	console.warn("extraction error", e);
 	process.exit(1);
 });

@@ -74,7 +74,7 @@ async function getCslForUrl(url: string) {
 	// It might be possible to fake the context and just run most extractors in Node, but that would be much more fragile and need a lot of testing.
 	// It should also be possible to use something like puppeteer to fetch the website headlessly and then run the extractor.
 
-	console.log("fetching citation from url", url);
+	// console.log("fetching citation from url", url);
 	const res = await fetch(
 		`https://en.wikipedia.org/api/rest_v1/data/citation/bibtex/${encodeURIComponent(
 			url,
@@ -148,7 +148,7 @@ export class Url2Cite {
 					const key = el.c[0].c[0][0].citationId;
 					const url = v.c;
 					if (key in this.citekeys)
-						console.log("warning: duplicate citekey", key);
+						console.warn("warning: duplicate citekey", key);
 					this.citekeys[key] = url;
 					// found citation, add it to citekeys and remove it from document
 					el.c = el.c.slice(sp + 1);
@@ -173,10 +173,10 @@ export class Url2Cite {
 				const url = isURL(id) ? id : this.citekeys[id];
 				if (!url) {
 					if (meta["url2cite-allow-dangling-citations"]) continue;
-					else console.log(`Could not find URL for @${id}.`);
+					// else console.log(`Could not find URL for @${id}.`);
 				}
 				if (typeof url !== "string")
-					console.log(`url for ${id} is not string: ${url}`);
+					console.warn(`url for ${id} is not string: ${url}`);
 				await this.getCslForUrlCached(url);
 				// replace the citation id with the url
 				citation.citationId = url;
@@ -245,7 +245,7 @@ export class Url2Cite {
 						[url, targetTitle],
 					);
 				}
-				console.log(`Unknown output format ${outputFormat}`);
+				console.warn(`Unknown output format ${outputFormat}`);
 			}
 		}
 	};
@@ -263,11 +263,11 @@ export class Url2Cite {
 		// untyped https://github.com/mvhenderson/pandoc-filter-node/issues/9
 		data = await filter(data, this.extractCiteKeys, format);
 		data = await filter(data, this.astTransformer, format);
-		console.log(
-			`got all ${
-				Object.keys(this.cache.urls).length
-			} citations from URLs`,
-		);
+		// console.log(
+		// 	`got all ${
+		// 		Object.keys(this.cache.urls).length
+		// 	} citations from URLs`,
+		// );
 		// add all cached references to the frontmatter. pandoc-citeproc will handle
 		// (ignore) unused keys. Concatenate with existing references if any exist.
 		const existingRefs =
